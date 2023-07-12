@@ -1,0 +1,89 @@
+############################################# Management 
+/MG/manager/mglog routine
+/MG/eventaction/reportingfrequency 250
+/MG/manager/seedWithUUID
+############################################# Process List
+/MG/processes/realm BBdecay
+/MG/processes/lowenergy true
+/MG/processes/useNoHadPhysics true
+############################################# Configure Detector
+/MG/geometry/detector LGND_200_TestStand
+############################################# Choosing mode
+/MG/L200_TestStand/UserGDML 1
+/MG/L200_TestStand/PossibleOfficialData 1
+############################################# Enhancing mode
+#/MG/L200_TestStand/GDMLFile Enhancing_Cryostat
+#/MG/L200_TestStand/GDMLPath /global/projecta/projectdirs/majorana/users/mariano/MJ_Software/CoriVs/MaGe/macros/LEGEND
+#/MG/L200_TestStand/SetVolumeList 1
+#/MG/L200_TestStand/AdditionalElement 000_001_n<Sphere>n_SPH_m<Steel>m_0_0_20_0_0_0_0_<0_7_0_180_0_180
+############################################# Main mode
+##### Also in predefine mode
+/MG/L200_TestStand/GDMLFile Dummy_Cryostat
+/MG/L200_TestStand/SetDetSerialN B0001
+/MG/L200_TestStand/SetVolumeList 0
+##### Not in predefined mode
+/MG/L200_TestStand/GDMLPath /global/projecta/projectdirs/majorana/users/mariano/MJ_Software/CoriVs/MaGe/macros/LEGEND
+/MG/L200_TestStand/DetReference Upper
+/MG/L200_TestStand/SetJSONFile LGND_200_14String.json
+##Translation and rotation
+/MG/L200_TestStand/theta 45
+/MG/L200_TestStand/EulerX 1
+/MG/L200_TestStand/EulerY 1
+/MG/L200_TestStand/EulerZ 1
+#/MG/L200_TestStand/PosX 100.0
+#/MG/L200_TestStand/PosY 90.0
+#/MG/L200_TestStand/PosZ 50.0
+############################################# No GDML mode
+#/MG/L200_TestStand/WorldMaterial Vacuum
+#/MG/L200_TestStand/AdditionalElement 000_001_n<Ge_crystal>n_TUB_m<Germanium-Enr>m_0_0_0_0_0_0_0_<0_10_10_0_360
+#/MG/L200_TestStand/AdditionalElement 000_002_n<Cryostat>n_POC_m<Steel>m_0_0_-30_0_0_0_0_<0_360_6_0_0_50_10_0_50_10.01_45_50_54.99_45_50_55_10_50_60_10_45
+#/MG/L200_TestStand/AdditionalElement 000_004_n<Pedestal>n_PHE_m<Aluminum>m_0_0_-20_0_0_0_0_<0_360_6_3_0_0_20_8_0_20_10_6_9
+#/MG/L200_TestStand/AdditionalElement 001_006_n<Dimple>n_SPH_m<Cadmium>m_0_0_-10_0_0_0_0_<0_1.5_0_360_0_90
+#/MG/L200_TestStand/AdditionalElement 002_003_n<Source_Wrapper>n_BOX_m<Air>m_18_0_57.5_0_0_0_0_<2.5_2.5_2.5
+#/MG/L200_TestStand/AdditionalElement 002_007_n<Ring>n_TOR_m<Copper-EF>m_0_0_57.5_0_0_0_0_<0_2.5_12.5_0_360
+#/MG/L200_TestStand/AdditionalElement 003_005_n<Source1>n_BOX_m<Vacuum>m_1_1.2_0_0_0_0_0_<0.5_0.5_0.5
+#/MG/L200_TestStand/AdditionalElement 003_008_n<Source1>n_BOX_m<Vacuum>m_1_-1.2_0_0_0_0_0_<0.5_0.5_0.5
+############################################# Sensitive volume (No GDML and Enhancing)
+/MG/L200_TestStand/AddSensitiveMaterial Steel
+/MG/L200_TestStand/AddSensitiveMaterial Germanium-Enr
+/MG/L200_TestStand/AddSensitiveMaterial Aluminum
+/MG/L200_TestStand/AddSensitiveMaterial Cadmium
+#/MG/L200_TestStand/AddSensitiveMaterial Air
+/MG/L200_TestStand/AddSensitiveMaterial Cooper-EF
+/MG/L200_TestStand/AddSensitiveVolume Pedestal
+############################################# Root file configuration
+/MG/eventaction/rootschema MCRun
+/MG/eventaction/rootfilename TestStandTest.root
+############################################# Input/Output configuration
+/MG/io/MCRun/SetSensitiveIDLabelScheme askGeom
+/MG/io/MCRun/setRunID 1
+/MG/io/MCRun/useTimeWindow true
+/MG/io/MCRun/setTimeWindow 86400 second
+############################################# Initialize Geant4 and geometry
+/run/initialize
+############################################# Generator
+/MG/generator/select SPS
+/gps/particle gamma
+/gps/pos/type Volume
+/gps/pos/shape Ellipsoid
+/gps/pos/centre 0 0 500 mm 
+/gps/pos/halfx 5.0 mm 
+/gps/pos/halfy 5.0 mm 
+/gps/pos/halfz 2.5 mm 
+/gps/pos/rot1 1 0 0 
+/gps/pos/rot2 0 1 0 
+/gps/direction 0 0 -1 
+/gps/ene/type Mono
+/gps/ene/mono 500 keV
+############################################# Visualization
+/vis/open HepRepFile
+/vis/drawVolume worlds
+/vis/viewer/flush
+/vis/scene/add/trajectories
+/vis/scene/add/hits
+/vis/scene/endOfEventAction accumulate
+############################################# (Primary) particles generated
+/run/beamOn 20
+############################################# Saving the geometry as GDML
+#/MG/geometry/GDML/outputName Dummy_Cryostat
+#/MG/geometry/GDML/write

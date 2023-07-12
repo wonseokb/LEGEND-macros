@@ -1,0 +1,72 @@
+# Management 
+/MG/manager/mglog routine #debugging
+
+/MG/manager/seedWithUUID
+
+# Process List
+/MG/processes/realm DarkMatter
+/MG/processes/lowenergy true
+#/MG/processes/optical true
+/MG/processes/opticalOnly true
+
+# Configure Detector
+/MG/geometry/detector LGND_200_14String
+/MG/L200/SetSensitiveVolumeSiPM true
+/MG/L200/SetSensitiveVolumeGermanium false
+/MG/L200/SetSensitiveVolumeArgon false
+#/MG/L200/SetSensitiveVolumeFiberCore true
+#/MG/L200/SetSensitiveVolumeSiPMOuter true
+#/MG/L200/SetSensitiveVolumeSiPMInner true
+#/MG/L200/SetLiquid Xenon-Doped-Argon-Liq
+
+
+# Initialize Geant4 and geometry
+/run/initialize
+
+/MG/eventaction/rootschema MCOpticalRun
+/MG/eventaction/reportingfrequency 100
+/MG/eventaction/rootfilename radonShieldReflectionTest.root
+
+/MG/io/MCOpticalRun/SetSensitiveIDLabelScheme askGeom
+/MG/io/MCOpticalRun/setRunID 001
+/MG/io/MCOpticalRun/useTimeWindow true
+/MG/io/MCOpticalRun/setTimeWindow 86400 second
+/MG/io/MCOpticalRun/setNSteps 50000
+#/MG/io/MCOpticalRun/KillAll 
+#/MG/io/MCOpticalRun/setWriteAllSteps
+#/MG/io/MCOpticalRun/setWriteAllStepsInEventsThatDepositEnergy
+#/MG/io/MCOpticalRun/setWriteAllSensitiveSteps
+
+
+
+/MG/generator/select SPS
+/gps/pos/type Point
+/gps/ang/type iso
+#Right above PMT 0 
+#/gps/pos/centre 0 120.65 -95.25 mm
+#In GAr above PMT0
+/gps/pos/centre 680 0 0 mm
+#/gps/pos/centre 295 0 0 mm
+/gps/particle opticalphoton
+/gps/ene/type Gauss
+/gps/ene/mono 9.682 eV #2.95 eV
+/gps/ene/sigma .163 eV
+/gps/polarization 1 0 0
+
+#/MG/generator/confine volume
+#/MG/generator/volume cryostat
+#/MG/generator/select RDMiso
+#/gun/energy 0 eV
+#/grdm/ion 224 88 0
+#/grdm/nucleusLimits 208 224 81 88
+#generate particles in the liquid argon
+#/MG/generator/select LGNDLiquidArgon
+#/MG/generator/LGNDLiquidArgon/SetParticle beta
+#/MG/generator/LGNDLiquidArgon/SetEnergy 1 MeV
+/tracking/verbose 2
+/run/beamOn 100
+#/MG/generator/select SPS
+#/gps/particle opticalphoton
+#/gps/ene/type Gauss
+#/gps/ene/mono 9.6862 eV
+#/gps/ene/sigma .2 eV
